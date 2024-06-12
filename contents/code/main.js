@@ -4,13 +4,15 @@ const config = {
     windowNameSuffix: null,
     windowClassName: null,
     command: null,
+    skipSwitcher: null,
+    skipTaskbar: null,
     loggingEnabled: true,
 };
 
 function log(...params) {
-  if (config.loggingEnabled) {
-    console.log(...params);
-  }
+    if (config.loggingEnabled) {
+        console.log(...params);
+    }
 }
 
 function loadConfiguration() {
@@ -18,6 +20,14 @@ function loadConfiguration() {
     config.windowNameSuffix = readConfig("windowNameSuffix", "").toString();
     config.windowClassName = readConfig("windowClassName", "").toString();
     config.launchCommand = readConfig("launchCommand", "/usr/bin/foot").toString();
+    const skipTaskbarEnabled = readConfig("skipTaskbarSettingEnabled", "false").toString() === "true";
+    config.skipTaskbar = skipTaskbarEnabled ?
+        readConfig("skipTaskbar", "false").toString() === "true"
+        : null;
+    const skipSwitcherEnabled = readConfig("skipSwitcherSettingEnabled", "false").toString() === "true";
+    config.skipSwitcher = skipSwitcherEnabled ?
+        readConfig("skipSwitcher", "false").toString() === "true"
+        : null;
     config.loggingEnabled = readConfig("debugLoggingEnabled", "false").toString() === "true";
     console.log("Starting with logging enabled?", config.loggingEnabled);
 }
@@ -29,9 +39,9 @@ log("Config", JSON.stringify(config));
 function isTerminal(window) {
     return (
         window.caption.substr(0, config.windowNamePrefix.length) === config.windowNamePrefix
-        &&
-        window.caption.substr(-1 * config.windowNameSuffix.length, config.windowNameSuffix.length) === config.windowNameSuffix
-        && config.windowClassName.trim() !== '' ? window.resourceClass === config.windowClassName : true
+            &&
+            window.caption.substr(-1 * config.windowNameSuffix.length, config.windowNameSuffix.length) === config.windowNameSuffix
+            && config.windowClassName.trim() !== '' ? window.resourceClass === config.windowClassName : true
     );
 }
 function launchTerminal() {
@@ -81,13 +91,19 @@ function setTerminal(window) {
     currentTerminal = window;
     currentTerminal.activeChanged.connect(onCurrentTerminalActiveChanged);
     currentTerminal.closed.connect(onCurrentTerminalWindowClosed);
+    if (config.skipTaskbar !== null) {
+        currentTerminal.skipTaskbar = config.skipTaskbar;
+    }
+    if (config.skipSwitcher !== null) {
+        currentTerminal.skipSwitcher = config.skipSwitcher;
+    }
 }
 
 function getTerminal() {
     if (currentTerminal !== null) {
         log("Existing terminal...");
         if (currentTerminal.deleted || !isTerminal(currentTerminal)) {
-          log("Terminal deleted");
+            log("Terminal deleted");
             currentTerminal = null;
         }
     }
@@ -135,6 +151,6 @@ function toggleTerminal() {
             log("Window maximized");
             hideTerminal(window);
         }
-	}
+    }
 }
 registerShortcut('ToggleTerminal', 'Toggle Terminal', 'Meta+`', toggleTerminal);

@@ -104,6 +104,48 @@
                 </widget>
             </item>
             <item row="8" column="0">
+                <layout class="QHBoxLayout" name="horizontalLayout_skipTaskbar">
+                    <item>
+                        <widget class="QCheckBox" name="kcfg_skipTaskbarSettingEnabled">
+                            <property name="text">
+                                <string>Enabled?</string>
+                            </property>
+                        </widget>
+                   </item>
+                   <item>
+                        <widget class="QCheckBox" name="kcfg_skipTaskbar">
+                            <property name="enabled">
+                                <bool>false</bool>
+                            </property>
+                            <property name="text">
+                                <string>Skip taskbar?</string>
+                            </property>
+                        </widget>
+                    </item>
+                </layout>
+            </item>
+            <item row="9" column="0">
+                <layout class="QHBoxLayout" name="horizontalLayout_skipSwitcher">
+                    <item>
+                        <widget class="QCheckBox" name="kcfg_skipSwitcherSettingEnabled">
+                            <property name="text">
+                                <string>Enabled?</string>
+                            </property>
+                        </widget>
+                    </item>
+                    <item>
+                        <widget class="QCheckBox" name="kcfg_skipSwitcher">
+                            <property name="enabled">
+                                <bool>false</bool>
+                            </property>
+                            <property name="text">
+                                <string>Skip switcher?</string>
+                            </property>
+                        </widget>
+                    </item>
+                </layout>
+            </item>
+            <item row="10" column="0">
                 <widget class="QCheckBox" name="kcfg_debugLoggingEnabled">
                     <property name="text">
                         <string>Debug logging?</string>
@@ -113,5 +155,18 @@
         </layout>
     </widget>
     <resources/>
-    <connections/>
+    <connections>
+        <connection>
+            <sender>kcfg_skipTaskbarSettingEnabled</sender>
+            <signal>toggled(bool)</signal>
+            <receiver>kcfg_skipTaskbar</receiver>
+            <slot>setEnabled(bool)</slot>
+        </connection>
+        <connection>
+            <sender>kcfg_skipSwitcherSettingEnabled</sender>
+            <signal>toggled(bool)</signal>
+            <receiver>kcfg_skipSwitcher</receiver>
+            <slot>setEnabled(bool)</slot>
+        </connection>
+    </connections>
 </ui>

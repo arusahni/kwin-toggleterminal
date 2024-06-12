@@ -18,6 +18,22 @@
             <label>Command for launching the terminal application if the window can not be found</label>
             <default>/usr/bin/foot</default>
         </entry>
+        <entry name="skipTaskbarSettingEnabled" type="Bool">
+            <label>Whether or not the setting for skipping the taskbar should be honored.</label>
+            <default>false</default>
+        </entry>
+        <entry name="skipTaskbar" type="Bool">
+            <label>Whether or not the window should be shown in the taskbar</label>
+            <default>false</default>
+        </entry>
+        <entry name="skipSwitcherSettingEnabled" type="Bool">
+            <label>Whether or not the setting for skipping the window switcher should be enabled</label>
+            <default>false</default>
+        </entry>
+        <entry name="skipSwitcher" type="Bool">
+            <label>Whether or not the window should be shown in the window switcher</label>
+            <default>false</default>
+        </entry>
         <entry name="debugLoggingEnabled" type="Bool">
             <label>Enable this if you wish to perform debug logging.</label>
             <default>false</default>
