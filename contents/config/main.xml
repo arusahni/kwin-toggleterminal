@@ -14,5 +14,9 @@
             <label>Command for launching the terminal application if the window can not be found</label>
             <default>/usr/bin/foot</default>
         </entry>
+        <entry name="debugLoggingEnabled" type="Bool">
+            <label>Enable this if you wish to perform debug logging.</label>
+            <default>false</default>
+        </entry>
     </group>
 </kcfg>
