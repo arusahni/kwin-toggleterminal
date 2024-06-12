@@ -2,6 +2,7 @@
 const config = {
     windowNamePrefix: null,
     windowNameSuffix: null,
+    windowClassName: null,
     command: null,
     loggingEnabled: true,
 };
@@ -15,6 +16,7 @@ function log(...params) {
 function loadConfiguration() {
     config.windowNamePrefix = readConfig("windowNamePrefix", "foot").toString();
     config.windowNameSuffix = readConfig("windowNameSuffix", "").toString();
+    config.windowClassName = readConfig("windowClassName", "").toString();
     config.launchCommand = readConfig("launchCommand", "/usr/bin/foot").toString();
     config.loggingEnabled = readConfig("debugLoggingEnabled", "false").toString() === "true";
     console.log("Starting with logging enabled?", config.loggingEnabled);
@@ -29,6 +31,7 @@ function isTerminal(window) {
         window.caption.substr(0, config.windowNamePrefix.length) === config.windowNamePrefix
         &&
         window.caption.substr(-1 * config.windowNameSuffix.length, config.windowNameSuffix.length) === config.windowNameSuffix
+        && config.windowClassName.trim() !== '' ? window.resourceClass === config.windowClassName : true
     );
 }
 function launchTerminal() {
