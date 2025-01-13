@@ -98,6 +98,37 @@ function setTerminal(window) {
     if (config.skipSwitcher !== null) {
         currentTerminal.skipSwitcher = config.skipSwitcher;
     }
+    placeTerminal();
+}
+
+
+function placeTerminal() {
+    if (currentTerminal === null) {
+        log("No terminal tracked");
+        return;
+    }
+    try {
+        const workspaceSize = workspace.clientArea(
+            KWin.WorkArea,
+            workspace.activeScreen,
+            workspace.currentDesktop,
+        );
+        const { width: screenWidth, height: screenHeight } = workspaceSize;
+        log("Dims", JSON.stringify(workspaceSize));
+        const width = Math.floor(screenWidth * 0.66);
+        const height = Math.floor(screenHeight * 0.5);
+        log("<= geo", JSON.stringify(currentTerminal.frameGeometry));
+        currentTerminal.frameGeometry.width = width;
+        currentTerminal.frameGeometry.x = Math.floor((screenWidth - width) / 2);
+        currentTerminal.frameGeometry.y = 0;
+        currentTerminal.frameGeometry.height = height;
+        currentTerminal.noBorder = true;
+        currentTerminal.skipsCloseAnimation = true;
+        log("=> geo", JSON.stringify(currentTerminal.frameGeometry));
+    } catch (e) {
+        log(e);
+        return;
+    }
 }
 
 function getTerminal() {
@@ -144,14 +175,17 @@ function toggleTerminal() {
     if (!window) {
         log("No window, launching");
         launchTerminal();
+        getTerminal();
+        placeTerminal();
     } else {
         if (window.minimized) {
             log("Window minimized");
             showTerminal(window);
+            placeTerminal();
         } else {
             log("Window maximized");
             hideTerminal(window);
         }
     }
 }
-registerShortcut('ToggleTerminal', 'Toggle Terminal', 'Meta+`', toggleTerminal);
+registerShortcut('ToggleTerminalDev', 'Toggle Terminal Dev', 'Meta+`', toggleTerminal);
