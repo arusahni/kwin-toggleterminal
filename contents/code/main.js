@@ -44,13 +44,14 @@ function isTerminal(window) {
             && config.windowClassName.trim() !== '' ? window.resourceClass === config.windowClassName : true
     );
 }
+
 function launchTerminal() {
     log("Launching");
     callDBus(
-        'nl.dvdgiessen.dbusapplauncher',
-        '/nl/dvdgiessen/DBusAppLauncher',
-        'nl.dvdgiessen.dbusapplauncher.Exec',
-        'Cmd',
+        "net.arusahni.DbusExecutor",
+        "/net/arusahni/DbusExecutor",
+        "net.arusahni.DbusExecutor.Exec",
+        "Cmd",
         config.launchCommand,
     );
 }
